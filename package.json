@@ -1,7 +1,7 @@
 {
   "name": "create-react-vite-capacitor-electron",
-  "version": "1.0.0",
-  "description": "A CLI tool to scaffold a new React-Vite-Capacitor-Electron project",
+  "version": "1.1.0",
+  "description": "A CLI tool to scaffold a new cross-platform React-Vite-Capacitor-Electron project",
   "bin": {
     "create-react-vite-capacitor-electron": "./bin/create.js"
   },
@@ -18,5 +18,10 @@
     "fs-extra": "^11.3.0",
     "inquirer": "^12.4.1"
   },
-  "type": "module"
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnastasiaAtTerrestrialOrigin/create-react-vite-capacitor-electron.git"
+  },
+  "homepage": "https://github.com/AnastasiaAtTerrestrialOrigin/create-react-vite-capacitor-electron"
 }
