@@ -31,8 +31,18 @@ async function main() {
   const answers = await inquirer.prompt([
     {
       name: 'projectName',
-      message: 'Project name:',
+      message: 'Project name (no spaces, lowercase):',
       default: 'my-app'
+    },
+    {
+      name: 'appId',
+      message: 'App ID:',
+      default: 'com.example.app'
+    },
+    {
+      name: 'humanReadableName',
+      message: 'Human readable name:',
+      default: 'My App'
     }
   ]);
 
