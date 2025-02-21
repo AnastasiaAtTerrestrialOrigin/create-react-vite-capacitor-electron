@@ -10,19 +10,34 @@ import inquirer from 'inquirer';
  * @param {object} replacements - Key/value pairs for replacements.
  */
 async function replacePlaceholders(dir, replacements) {
-  const entries = await fs.readdir(dir, { withFileTypes: true, recursive: true });
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      await replacePlaceholders(fullPath, replacements);
-    } else {
-      let content = await fs.readFile(fullPath, 'utf8');
-      for (const [placeholder, value] of Object.entries(replacements)) {
-        const regex = new RegExp(`{{\\s*${placeholder}\\s*}}`, 'g');
-        content = content.replace(regex, value);
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await replacePlaceholders(fullPath, replacements);
+      } else {
+        try {
+          let content = await fs.readFile(fullPath, 'utf8');
+          let modified = false;
+          for (const [placeholder, value] of Object.entries(replacements)) {
+            const regex = new RegExp(`{{\\s*${placeholder}\\s*}}`, 'g');
+            if (content.match(regex)) {
+              content = content.replace(regex, value);
+              modified = true;
+            }
+          }
+          if (modified) {
+            await fs.writeFile(fullPath, content);
+          }
+        } catch (fileError) {
+          console.warn(`Warning: Could not process file ${fullPath}: ${fileError.message}`);
+        }
       }
-      await fs.writeFile(fullPath, content);
     }
+  } catch (error) {
+    console.error(`Error processing directory ${dir}: ${error.message}`);
+    throw error;
   }
 }
 
