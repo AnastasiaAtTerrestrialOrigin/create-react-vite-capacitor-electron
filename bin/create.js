@@ -10,7 +10,7 @@ import inquirer from 'inquirer';
  * @param {object} replacements - Key/value pairs for replacements.
  */
 async function replacePlaceholders(dir, replacements) {
-  const entries = await fs.readdir(dir, { withFileTypes: true });
+  const entries = await fs.readdir(dir, { withFileTypes: true, recursive: true });
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
@@ -60,7 +60,9 @@ async function main() {
 
   // Replace placeholders in the copied files:
   const replacements = {
-    projectName: answers.projectName
+    projectName: answers.projectName,
+    appId: answers.appId,
+    humanReadableName: answers.humanReadableName
   };
   console.log("Replacing placeholders...");
   await replacePlaceholders(targetDir, replacements);
